@@ -12,7 +12,7 @@ public class NPCController : MonoBehaviour
     public Pathfinder pathfinder;
     public GameObject player;
 
-    private List<GridTile> path = new();
+    private List<GridTile> path;
     private int currentIndex;
 
     private float detectionRadius = 3f;
@@ -22,6 +22,7 @@ public class NPCController : MonoBehaviour
 
     private void Start()
     {
+        path = null;
         allNPCs.Add(this);
     }
 
@@ -42,6 +43,7 @@ public class NPCController : MonoBehaviour
         {
             ChangeState(State.Flee);
             AlertOthers();
+            return;
         }
 
         switch (currentState)
@@ -69,14 +71,15 @@ public class NPCController : MonoBehaviour
     {
         if (path == null || currentIndex >= path.Count-1)
         {
-            if (currentState != State.Flee)
-                ChangeState(State.Idle);
-            else
-                ChangeState(State.Flee);
+            ChangeState(State.Patrol);
+            return;
         }
 
         Vector3 targetPos = new Vector3(path[currentIndex].x, 0, path[currentIndex].y);
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, 3f * Time.deltaTime);
+        if (currentState == State.Patrol)
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, 3f * Time.deltaTime);
+        else
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, 4.3f * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, targetPos) < 0.1f)
             currentIndex++;
@@ -98,7 +101,6 @@ public class NPCController : MonoBehaviour
                 path = pathfinder.FindPath(transform.position, randomPos);
                 if (path == null)
                 { 
-                    ChangeState(State.Idle);
                     return;
                 }
                 currentIndex = 0;
@@ -110,7 +112,6 @@ public class NPCController : MonoBehaviour
                 path = pathfinder.FindPath(transform.position, fleeTarget);
                 if (path == null)
                 {
-                    ChangeState(State.Patrol);
                     return;
                 }
                 currentIndex = 0;
@@ -137,9 +138,8 @@ public class NPCController : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {   
+    {
         if (other.gameObject.CompareTag("Player"))
             Destroy(this);
     }
 }
-

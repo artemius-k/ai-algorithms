@@ -23,23 +23,18 @@ public class Pathfinder : MonoBehaviour
         {
             var neighbours = gridManager.GetNeighbours(targetNode);
 
-            bool found = false;
             GridTile lastNeighbour = targetNode;
             foreach(var neighbour in neighbours)
             {
                 if (neighbour.isWalkable)
                 {
                     targetNode = neighbour;
-                    found = true;
                     break;
                 }
                 lastNeighbour = neighbour;
             }
 
-            if (!found)
-            {
-                targetNode = lastNeighbour;
-            }
+            if (!targetNode.isWalkable) targetNode = lastNeighbour;
         }
 
         List<GridTile> openSet = new List<GridTile>();

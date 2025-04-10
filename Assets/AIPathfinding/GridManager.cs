@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     public float cellSize = 1f;         
     public GameObject tilePrefab;      
 
-    private GridTile[,] grid;
+    public GridTile[,] grid;
 
     public Material tileWalkable;
     public Material tileWall;
