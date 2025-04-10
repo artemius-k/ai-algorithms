@@ -12,11 +12,17 @@ public class GridManager : MonoBehaviour
 
     private GridTile[,] grid;
 
+    public Material tileWalkable;
+    public Material tileWall;
+
+    public Spawner spawner;
+
     void Start()
     {
         grid = new GridTile[width, height];
         GenerateGrid();
         GenerateMaze();
+        spawner.SpawnUnits(this);
     }
 
     void GenerateGrid()
@@ -29,6 +35,8 @@ public class GridManager : MonoBehaviour
                 GameObject nodeObj = Instantiate(tilePrefab, pos, Quaternion.identity);
                 GridTile node = nodeObj.AddComponent<GridTile>();
                 node.SetPosition(x, y);
+                node.tileWalkable = tileWalkable;
+                node.tileWall = tileWall;
                 grid[x, y] = node;
 
                 if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
@@ -67,10 +75,6 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        foreach (var node in grid)
-        {
-            node.UpdateColor();
-        }
     }
 
     bool IsInBounds(int x, int y) => x > 0 && y > 0 && x < width - 1 && y < height - 1;
@@ -123,7 +127,6 @@ public class GridManager : MonoBehaviour
         }
 
         if (walkableNodes.Count == 0) return null;
-
       
         Vector3 center = new Vector3(width / 2, 0, height / 2);
         GridTile furthestNode = walkableNodes.OrderByDescending(n => Vector3.Distance(n.worldPosition, center)).FirstOrDefault();
@@ -135,7 +138,7 @@ public class GridManager : MonoBehaviour
     public GridTile GetRandomWalkableNode()
     {
         List<GridTile> walkableNodes = new List<GridTile>();
-
+        Debug.Log(grid);
         foreach (var node in grid)
         {
             if (node.isWalkable)  

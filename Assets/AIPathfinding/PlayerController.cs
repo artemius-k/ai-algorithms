@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
             {
                 path = pathfinder.FindPath(transform.position, hit.point);
                 targetIndex = 0;
-                StopCoroutine("FollowPath");
-                StartCoroutine("FollowPath");
+                StopCoroutine(FollowPath());
+                StartCoroutine(FollowPath());
             }
         }
     }

@@ -1,23 +1,19 @@
 using NUnit.Framework;
 using UnityEngine;
 
-[RequireComponent(typeof(GridManager))]
 public class Spawner : MonoBehaviour
 {
     public GameObject unitPrefab;
     public int unitsAmountToSpawn;
-    private GridManager gridManager;
 
     public GameObject[] units;
 
     private void Start()
     {
-        gridManager = GetComponent<GridManager>();
         units = new GameObject[unitsAmountToSpawn];
-        SpawnUnits();
     }
 
-    private void SpawnUnits()
+    public void SpawnUnits(GridManager gridManager)
     {
         for (int i = 0; i < unitsAmountToSpawn; ++i)
         {

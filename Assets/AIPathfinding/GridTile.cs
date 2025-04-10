@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class GridTile : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class GridTile : MonoBehaviour
     public GridTile parent;
     private Renderer externalRenderer;
 
+    public Material tileWalkable;
+    public Material tileWall;
+
     public int gCost;
     public int hCost;
 
@@ -17,14 +21,16 @@ public class GridTile : MonoBehaviour
 
     public void UpdateColor()
     {
-        if (!isWalkable)
+        Debug.Log(externalRenderer != null);
+        if (isWalkable)
         {
-            externalRenderer.material.color = Color.black; 
+            externalRenderer.material = tileWalkable; 
         }
         else
         {
-            externalRenderer.material.color = Color.white; 
+            externalRenderer.material = tileWall; 
         }
+        
     }
 
     void Start()
