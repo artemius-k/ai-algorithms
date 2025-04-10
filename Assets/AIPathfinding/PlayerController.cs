@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,10 +14,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
-        {
+        {            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+          
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
+                Debug.Log("Pressed");
+
                 path = pathfinder.FindPath(transform.position, hit.point);
                 targetIndex = 0;
                 StopCoroutine(FollowPath());

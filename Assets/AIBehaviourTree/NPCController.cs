@@ -140,6 +140,6 @@ public class NPCController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-            Destroy(this);
+            Destroy(this.gameObject);
     }
 }
