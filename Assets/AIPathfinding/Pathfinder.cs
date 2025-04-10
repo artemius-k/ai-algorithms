@@ -16,8 +16,31 @@ public class Pathfinder : MonoBehaviour
         GridTile startNode = gridManager.GetNode(startPos);
         GridTile targetNode = gridManager.GetNode(targetPos);
 
-        if (startNode == null || targetNode == null || !targetNode.isWalkable)
+        if (startNode == null || targetNode == null)
             return null;
+
+        while (!targetNode.isWalkable)
+        {
+            var neighbours = gridManager.GetNeighbours(targetNode);
+
+            bool found = false;
+            GridTile lastNeighbour = targetNode;
+            foreach(var neighbour in neighbours)
+            {
+                if (neighbour.isWalkable)
+                {
+                    targetNode = neighbour;
+                    found = true;
+                    break;
+                }
+                lastNeighbour = neighbour;
+            }
+
+            if (!found)
+            {
+                targetNode = lastNeighbour;
+            }
+        }
 
         List<GridTile> openSet = new List<GridTile>();
         HashSet<GridTile> closedSet = new HashSet<GridTile>();

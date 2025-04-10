@@ -1,4 +1,4 @@
-using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -6,21 +6,28 @@ public class Spawner : MonoBehaviour
     public GameObject unitPrefab;
     public int unitsAmountToSpawn;
 
-    public GameObject[] units;
+    private GridManager gridManager;
+    private Pathfinder pathfinder;
+    public GameObject player;
 
     private void Start()
     {
-        units = new GameObject[unitsAmountToSpawn];
+        gridManager = GetComponent<GridManager>();
+        pathfinder = GetComponent<Pathfinder>();
     }
 
-    public void SpawnUnits(GridManager gridManager)
+    public void SpawnUnits()
     {
         for (int i = 0; i < unitsAmountToSpawn; ++i)
         {
             GridTile tileToSpawnOn = gridManager.GetRandomWalkableNode();
             Vector3 positionToSpawnOn = new Vector3(tileToSpawnOn.x, 0, tileToSpawnOn.y);
-            GameObject unit = Instantiate(unitPrefab, positionToSpawnOn, Quaternion.identity);
-            units[i] = unit;
+            GameObject npc = Instantiate(unitPrefab, positionToSpawnOn, Quaternion.identity);
+            
+            var npcController = npc.GetComponent<NPCController>();
+            npcController.player = player;
+            npcController.pathfinder = pathfinder;
+            npcController.gridManager = gridManager;
         }
     }
 }

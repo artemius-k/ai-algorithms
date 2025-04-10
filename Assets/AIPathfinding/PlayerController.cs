@@ -29,8 +29,9 @@ public class PlayerController : MonoBehaviour
     {
         while (targetIndex < path.Count)
         {
-            transform.position = Vector3.MoveTowards(transform.position, path[targetIndex].transform.position, 5f * Time.deltaTime);
-            if (Vector3.Distance(transform.position, path[targetIndex].transform.position) < 0.1f)
+            var targetPosition = new Vector3(path[targetIndex].transform.position.x, 0, path[targetIndex].transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+            if (Vector3.Distance(transform.position, path[targetIndex].transform.position) < 0.5f)
                 targetIndex++;
 
             yield return null;

@@ -21,7 +21,6 @@ public class GridTile : MonoBehaviour
 
     public void UpdateColor()
     {
-        Debug.Log(externalRenderer != null);
         if (isWalkable)
         {
             externalRenderer.material = tileWalkable; 
@@ -30,7 +29,6 @@ public class GridTile : MonoBehaviour
         {
             externalRenderer.material = tileWall; 
         }
-        
     }
 
     void Start()

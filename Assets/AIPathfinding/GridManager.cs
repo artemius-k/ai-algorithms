@@ -22,7 +22,7 @@ public class GridManager : MonoBehaviour
         grid = new GridTile[width, height];
         GenerateGrid();
         GenerateMaze();
-        spawner.SpawnUnits(this);
+        spawner.SpawnUnits();
     }
 
     void GenerateGrid()
@@ -138,7 +138,6 @@ public class GridManager : MonoBehaviour
     public GridTile GetRandomWalkableNode()
     {
         List<GridTile> walkableNodes = new List<GridTile>();
-        Debug.Log(grid);
         foreach (var node in grid)
         {
             if (node.isWalkable)  
